@@ -34,7 +34,7 @@ you can safely ignore them for now.
 > **Warning** <br>
 > Your final submission for project 1 is **not** a Unity project and should have **no Unity dependencies**. 
 > The goal of this workshop is to provide you with a sandbox to practice and visualise the techniques required to 
-> complete stage 1 of the project (and even later stages), not give you exact copy-paste solutions to it. 
+> complete stage 1 of the project (and even later stages), not give you "copy-paste" solutions to it. 
 
 ### Tasks
 
@@ -47,8 +47,8 @@ representing a very low resolution (9x9) "image" that will eventually be the tar
 There are a couple of important things to note here. Firstly, the scene you currently see is *not* ray traced, and simply uses
 standard triangle mesh "rasterisation" you already saw last week. In other words, we have created 
 an equivalent of the project sample scene in Unity, purely for visualisation and debugging purposes. Secondly, the image pixel
-grid has been "embedded" in the world such that it overlays the scene as it will be rendered when using actual
-ray tracing techniques later in this workshop. 
+grid has been "embedded" in the world such that it overlays the scene exactly (the ray tracer "camera"
+settings match the Unity camera settings).
 
 Switch to the `Scene` tab while the simulation is running, and you can see that the image plane ("pixel grid") 
 is exactly one unit in front of the Unity camera. In the object hierarchy, click on each object and inspect the components
@@ -181,27 +181,29 @@ might clutter the output too much (or even unnecessarily slow your PC).
 
 At the moment the Unity engine is used to compute ray-entity intersections. Open each of
 the `Plane.cs`, `Triangle.cs` and `Sphere.cs` files and note the overriden `Intersect()`
-method in each. At the moment this method simply calls the `base` (parent) class
-implementation, which is seemingly redundant.
+method in each. Currently this method simply calls the `base` (parent) class
+implementation. Your final task is to **write your own** `Intersect()` method for each primitive, such that it
+overrides the base class implementation. Start with the plane,
+as this is likely to be the most straightforward mathematically. 
 
-However, it is far from redundant for the purposes of completing project 1. Think of these
+You can think of these
 methods like "debuggers" for your ray-entity intersection code. If you can write your
-own intersection logic that works within Unity here, it should be easily transferable
-to your project. You'll be able to be more confident your approach is correct, and/or
-debug issues with your approach (remember: you can always create debug rays!).
+own intersection logic that _successfully_ overrides Unity's here, it should also be transferable
+to your project with some minor modification, and you can be more confident your general approach is correct. 
 
 > **Note** <br>
 > If you do end up porting some of the logic to your project, keep in mind that certain
-> Unity classes like `Vector3`, `Ray` and `RaycastHit` have equivalents in the project
+> Unity classes like `Vector3`, `Ray` and `RaycastHit` have "equivalents" in the project
 > template code. There are some differences in the interfaces, and even the numerical
-> precision (`floats` are used in Unity, but we use `doubles` in the project). 
+> precision (`floats` are used in Unity, but we use `doubles` in the project).
 
-At this point we'll leave it to you. Feel free to personally extend this workshop to assist 
+At this point we'll leave things to you. Feel free to personally extend this workshop to assist 
 with the testing and/or debugging of your project solution. Be careful not to share this 
 with other students though -- use a **private** repository if you fork this one! 
 
 Finally, it's important to remember we aren't giving you "copy-paste" solutions 
-to the project here (although you might find it does come close
-in some cases). Use this as a tool, _among others_, when completing the project.
+to the project here, although you might find it does come close
+in some select cases. You may use this as a tool, among _other_ resources (the most important 
+being the specification), to assist with completing the project.
 
 Good luck!
