@@ -37,11 +37,58 @@ public class Scene : MonoBehaviour
         this.debug.Ray(new Ray(Vector3.zero, NormalizedImageToWorldCoord(0f, 0f)), Color.blue);
         
         // Add more rays to visualise here...
-    }
+        this.debug.Ray(new Ray(Vector3.zero, NormalizedImageToWorldCoord(1f, 1f)), Color.blue);
+        this.debug.Ray(new Ray(Vector3.zero, NormalizedImageToWorldCoord(0f, 1f)), Color.blue);
+        this.debug.Ray(new Ray(Vector3.zero, NormalizedImageToWorldCoord(1f, 0f)), Color.blue);
+
+
+        this.debug.Ray(new Ray(Vector3.zero, NormalizedImageToWorldCoord(0.5f/9f, 0.5f/9f)), Color.white);
+
+        for (float i = 0.5f; i < 9f; i+=1.0f) 
+        {
+            for(float j = 0.5f; j < 9f; j+=1.0f){
+                this.debug.Ray(new Ray(Vector3.zero, NormalizedImageToWorldCoord(i/9f, j/9f)), Color.white);
+
+            }
+            
+        }
+        
+    }   
 
     private void Render()
     {
         // Render the image here...
+        for (int i = 0; i < this.image.Width; i+=1) 
+        for(int j = 0; j < this.image.Height; j+=1)
+        {
+            this.image.SetPixel(i,j, Color.black);
+
+            var ray = PixelRay(i, j);
+            RaycastHit? nearestHit = null;
+            foreach (var sceneEntity in FindObjectsOfType<SceneEntity>())
+            {
+                var hit = sceneEntity.Intersect(ray);
+                // Note: sceneEntity could actually be a Triangle OR Plane OR Sphere.
+                // But does it matter for the purposes of this exercise?
+                if (hit != null && (hit?.distance < nearestHit?.distance || nearestHit == null))
+                {
+                this.image.SetPixel(i, j, sceneEntity.Color());
+                nearestHit = hit;
+                }
+                
+            }
+
+        }
+    }
+
+    private Ray PixelRay(int x, int y)
+    {
+        var normX = (x + 0.5f) / this.image.Width;
+        var normY = (y + 0.5f) / this.image.Height;
+
+        var worldPixelCoord = NormalizedImageToWorldCoord(normX, normY);
+
+        return new Ray(Vector3.zero, worldPixelCoord);
     }
 
     private Vector3 NormalizedImageToWorldCoord(float x, float y)
